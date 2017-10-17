@@ -1,0 +1,11 @@
+<form is="iron-form" id="et-form" [formGroup]="group" #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+  <vaadin-combo-box name="lineref" label="Line Ref" [items]="lineRefs" item-label-path="LineRef" item-value-path="LineRef"
+    (value-changed)="onChange('lineRef',$event.detail.value)" #lineRefElement></vaadin-combo-box>
+  <br/>
+  <span class="siri-cli-form-label">Preview Interval</span>
+  <paper-slider (value-changed)="onChange('previewInterval', $event.detail.value)" pin="true" max="180"></paper-slider>
+  <br/>
+  <div class="layout horizontal end-justified">
+    <paper-button class="paper-button colored raised-button shadow-top-z-1" type="submit" raised [disabled]="!group.valid" (click)="onSubmit(f.value)">Submit</paper-button>
+  </div>
+</form>

@@ -1,0 +1,36 @@
+{
+  "name": "json-formatter-js",
+  "version": "2.2.0",
+  "authors": [
+    "Mohsen Azimi <me@azimi.me>"
+  ],
+  "main": [
+    "dist/json-formatter.js",
+    "dist/style.css"
+  ],
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "json"
+  ],
+  "license": "MIT",
+  "homepage": "mohsen1/json-formatter-js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "2.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.2.0",
+    "commit": "21d556fe4f8201c9784c374cd3d94336246fe793"
+  },
+  "_source": "https://github.com/mohsen1/json-formatter-js.git",
+  "_target": "^2.2.0",
+  "_originalSource": "json-formatter-js",
+  "_direct": true
+}
