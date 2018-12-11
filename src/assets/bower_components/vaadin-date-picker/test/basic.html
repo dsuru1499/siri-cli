@@ -256,6 +256,18 @@
         expect(datepicker.$.dropdown.noAutoFocus).to.equal(true);
       });
 
+      it('should realign on iron-resize', function(done) {
+        open(datepicker, function() {
+          sinon.stub(datepicker, '_updateAlignmentAndPosition', function() {
+            if (!done._called) {
+              done._called = true;
+              done();
+            }
+          });
+          datepicker.fire('iron-resize', undefined, {bubbles: false});
+        });
+      });
+
       describe('window scroll realign', function() {
 
         beforeEach(function(done) {
@@ -291,14 +303,16 @@
           });
         });
 
-        it('should not realign on year/month scroll', function(done) {
-          var spy = sinon.spy(datepicker, '_updateAlignmentAndPosition');
-          datepicker.$.overlay.$.yearScroller.$.scroller.scrollTop += 100;
-          datepicker.async(function() {
-            expect(spy.called).to.be.false;
-            done();
-          }, 1);
-        });
+        if (!ios) { // https://github.com/vaadin/vaadin-date-picker/issues/330
+          it('should not realign on year/month scroll', function(done) {
+            var spy = sinon.spy(datepicker, '_updateAlignmentAndPosition');
+            datepicker.$.overlay.$.yearScroller.$.scroller.scrollTop += 100;
+            datepicker.async(function() {
+              expect(spy.called).to.be.false;
+              done();
+            }, 1);
+          });
+        }
 
         it('should not realign once closed', function(done) {
           datepicker.addEventListener('iron-overlay-closed', function() {
@@ -337,23 +351,23 @@
         it('should not accept non-ISO formats', function() {
           datepicker.value = '03/02/01';
           expect(datepicker.value).to.equal('');
-          expect(datepicker._selectedDate).to.be.null;
+          expect(datepicker._selectedDate).to.equal('');
 
           datepicker.value = '2010/02/03';
           expect(datepicker.value).to.equal('');
-          expect(datepicker._selectedDate).to.be.null;
+          expect(datepicker._selectedDate).to.equal('');
 
           datepicker.value = '03/02/2010';
           expect(datepicker.value).to.equal('');
-          expect(datepicker._selectedDate).to.be.null;
+          expect(datepicker._selectedDate).to.equal('');
 
           datepicker.value = '3 Feb 2010';
           expect(datepicker.value).to.equal('');
-          expect(datepicker._selectedDate).to.be.null;
+          expect(datepicker._selectedDate).to.equal('');
 
           datepicker.value = 'Feb 3, 2010';
           expect(datepicker.value).to.equal('');
-          expect(datepicker._selectedDate).to.be.null;
+          expect(datepicker._selectedDate).to.equal('');
         });
 
         it('should output ISO format', function() {

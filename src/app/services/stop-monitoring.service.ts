@@ -65,7 +65,7 @@ export class StopMonitoringService extends SiriService {
     }
     if (options['maximumNumberOfCallsOnwards'] || options['maximumNumberOfCallsPrevious']) {
       let maximumNumberOfCalls = Xml.createElement(request, 'siri:MaximumNumberOfCalls', null);
-      if (options['maximumNumberOfCallsOnwards']) {
+      if (options['maximumNumberOfCallsOnwards']) {        
         Xml.createElement(maximumNumberOfCalls, 'siri:Onwards', options['maximumNumberOfCallsOnwards']);
       }
       if (options['maximumNumberOfCallsPrevious']) {

@@ -2,7 +2,6 @@ import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Observer } from 'rxjs/Rx';
-import *  as xpath from 'xpath';
 
 import { Constant } from './utils/constant';
 import * as reducers from './reducers';

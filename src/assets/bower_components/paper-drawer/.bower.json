@@ -32,15 +32,14 @@
     "web-component-tester": "*",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
   },
-  "version": "1.0.15",
-  "_release": "1.0.15",
+  "version": "1.0.20",
+  "_release": "1.0.20",
   "_resolution": {
     "type": "version",
-    "tag": "1.0.15",
-    "commit": "4c4e949e6529d4cac6b32f4015d15c98e3b45378"
+    "tag": "1.0.20",
+    "commit": "9c2cda2106ec782bdd555e4354b8d27cd4c67f07"
   },
   "_source": "https://github.com/Collaborne/paper-drawer.git",
   "_target": "^1.0.15",
-  "_originalSource": "paper-drawer",
-  "_direct": true
+  "_originalSource": "paper-drawer"
 }

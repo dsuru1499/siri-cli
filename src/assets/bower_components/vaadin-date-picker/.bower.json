@@ -32,7 +32,9 @@
     "iron-media-query": "polymerelements/iron-media-query#^1.0.8",
     "paper-ripple": "polymerelements/paper-ripple#^1.0.5",
     "iron-a11y-keys-behavior": "polymerelements/iron-a11y-keys-behavior#^1.1.1",
-    "iron-a11y-announcer": "PolymerElements/iron-a11y-announcer#^1.0.5"
+    "iron-a11y-announcer": "PolymerElements/iron-a11y-announcer#^1.0.5",
+    "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^1.1.0",
+    "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^1.0.5"
   },
   "devDependencies": {
     "iron-test-helpers": "polymerelements/iron-test-helpers#^1.1.5",
@@ -44,18 +46,17 @@
     "iron-meta": "polymerelements/iron-meta#^1.1.1",
     "sugar": "^2.0.0",
     "iron-icons": "polymerelements/iron-icons#^1.1.2",
-    "web-component-tester": "^5.0.0"
+    "web-component-tester": "^6.0.0-prerelease.7"
   },
   "homepage": "https://github.com/vaadin/vaadin-date-picker",
-  "version": "1.2.1",
-  "_release": "1.2.1",
+  "version": "1.2.4",
+  "_release": "1.2.4",
   "_resolution": {
     "type": "version",
-    "tag": "v1.2.1",
-    "commit": "a70cab55a80a870bb55755be543ff740cc5b38ae"
+    "tag": "v1.2.4",
+    "commit": "5867b13a8b94da712b1f05c570918174199d6719"
   },
   "_source": "https://github.com/vaadin/vaadin-date-picker.git",
   "_target": "^1.2.1",
-  "_originalSource": "vaadin-date-picker",
-  "_direct": true
+  "_originalSource": "vaadin-date-picker"
 }

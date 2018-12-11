@@ -32,8 +32,8 @@ export class StopMonitoringFormComponent implements OnInit {
       maximumStopVisits: [''],
       minimumStopVisitsPerLine: [''],
       minimumStopVisitsPerLineVia: [''],
-      maximumNumberOfCallsPrevious: [''],
-      maximumNumberOfCallsOnwards: [''],
+      maximumNumberOfCallsPrevious: ['0'],
+      maximumNumberOfCallsOnwards: ['0'],
     });
   }
 
