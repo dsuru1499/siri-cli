@@ -11,7 +11,7 @@ export abstract class SiriService {
   public get(url: string): Observable<Response> {
     let doc = this.getDocument(url);
     let body = Xml.toString(doc);
-    url = url.slice(0, url.indexOf('?'));
+    url = (url.indexOf('?') > 0) ? url.slice(0, url.indexOf('?')) : url;
     let headers = new Headers({
       'Content-Type': 'text/xml'
     });

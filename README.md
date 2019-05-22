@@ -3,13 +3,13 @@
 # Siri Demo
 Demo OpenShift (Redhat Kubernetes) 
 
-http://siri-demo-siri-demo.7e14.starter-us-west-2.openshiftapps.com/siri-cli/index.html
+http://siri-demo-siri-demo.apps.us-east-2.online-starter.openshift.com/siri-cli/index.html
 
 ### Siri Lite Cli (version Angular)
-http://siri-demo-siri-demo.7e14.starter-us-west-2.openshiftapps.com/siri-lite-cli/index.html
+http://siri-demo-siri-demo.apps.us-east-2.online-starter.openshift.com/siri-lite-cli/index.html
 
 ### Siri Lite Cli (version Vuejs)
-http://siri-demo-siri-demo.7e14.starter-us-west-2.openshiftapps.com/siri-lite-vue/index.html
+http://siri-demo-siri-demo.apps.us-east-2.online-starter.openshift.com/siri-lite-vue/index.html
 
 ### Siri Lite Cli (version Reactjs)
 
