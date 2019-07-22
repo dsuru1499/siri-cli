@@ -13,7 +13,7 @@ declare let Node: any;
 export class XmlviewComponent implements OnChanges {
 
   public static KEY = ' W0RTVV0gMTcvMTAvMTcgQ2l0eXdheSBhc3NvY2lhdGlvbiBkZSBtw6lkaW9jcmVzCg==';  
-  private static MAX: number = 1000;
+  private static MAX: number = 100;
   private counter: number = 0;
 
   @Input()

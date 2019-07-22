@@ -1,22 +1,25 @@
-# Siri Demo
-
-# Siri Demo
+## Demo
 Demo OpenShift (Redhat Kubernetes) 
 
-http://siri-demo-siri-demo.apps.us-east-2.online-starter.openshift.com/siri-cli/index.html
+### Siri Cli (version Reactjs)
+http://siri-demo-siri-demo.apps.us-east-1.online-starter.openshift.com/siri-react/index.html
+
+### Siri Cli (version Angular)
+http://siri-demo-siri-demo.apps.us-east-1.online-starter.openshift.com/siri-cli/index.html
 
 ### Siri Lite Cli (version Angular)
-http://siri-demo-siri-demo.apps.us-east-2.online-starter.openshift.com/siri-lite-cli/index.html
+http://siri-demo-siri-demo.apps.us-east-1.online-starter.openshift.com/siri-lite-cli/index.html
 
 ### Siri Lite Cli (version Vuejs)
-http://siri-demo-siri-demo.apps.us-east-2.online-starter.openshift.com/siri-lite-vue/index.html
+http://siri-demo-siri-demo.apps.us-east-1.online-starter.openshift.com/siri-lite-vue/index.html
 
 ### Siri Lite Cli (version Reactjs)
+http://siri-demo-siri-demo.apps.us-east-1.online-starter.openshift.com/siri-lite-react/index.html
 
 ## siri-cli
 
 ### Utilisation
-java -jar siri_demo-1.0.0.jar  
+java -jar siri-demo-1.0.0.jar  
 URL : <http://localhost:8080/siri-cli/index.html>  
 Build : ng build
 
