@@ -18,7 +18,7 @@ export abstract class SiriService {
       'Content-Type': 'text/xml'
     });
 
-    url = (isDevMode) ? 'http://localhost:8080' + url : url;
+    url = (isDevMode()) ? 'http://localhost:8080' + url : url;
     return this.http.post(url, body, { headers, responseType: 'text' }).pipe(
       map(response => Xml.fromString(response)),
       catchError(this.onError)
