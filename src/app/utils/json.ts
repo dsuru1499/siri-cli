@@ -6,59 +6,59 @@ declare var Node: any;
 
 export class Json {
 
-    public static PREFIX_MATCH = new RegExp("(?!xmlns)^.*:");
-    public static NAMESPACE_MATCH = new RegExp("^xmlns:*");
+    public static PREFIX_MATCH = new RegExp('(?!xmlns)^.*:');
+    public static NAMESPACE_MATCH = new RegExp('^xmlns:*');
 
     public static toJson(xml: any): any {
-        var result = {};
+        let result = {};
 
         // element
-        if (xml.nodeType == 1) {
+        if (xml.nodeType === 1) {
 
             // attributes
             if (xml.attributes.length > 0) {
-                for (var j = 0; j < xml.attributes.length; j++) {
-                    var attribute = xml.attributes.item(j);
+                for (let j = 0; j < xml.attributes.length; j++) {
+                    const attribute = xml.attributes.item(j);
                     if (Json.NAMESPACE_MATCH
                         .test(attribute.nodeName)) {
                         continue;
                     }
 
-                    var nodeName = attribute.nodeName
+                    const nodeName = attribute.nodeName
                         .replace(
-                        Json.PREFIX_MATCH,
-                        '');
+                            Json.PREFIX_MATCH,
+                            '');
                     result[nodeName] = attribute.nodeValue;
                 }
             }
 
             // text
-        } else if (xml.nodeType == 3) {
+        } else if (xml.nodeType === 3) {
             result = this.convert(xml.nodeValue);
         }
 
         // childrens
         if (xml.hasChildNodes()) {
-            for (var i = 0; i < xml.childNodes.length; i++) {
-                var item = xml.childNodes.item(i);
-                var nodeName = item.nodeName.replace(
+            for (let i = 0; i < xml.childNodes.length; i++) {
+                const item = xml.childNodes.item(i);
+                const nodeName = item.nodeName.replace(
                     Json.PREFIX_MATCH, '');
 
-                if (item.nodeType == 3) {
+                if (item.nodeType === 3) {
                     result = this
                         .convert(item.nodeValue);
                 } else {
-                    if (typeof (result[nodeName]) == "undefined") {
-                        var value = this
+                    if (typeof (result[nodeName]) === 'undefined') {
+                        const value = this
                             .toJson(item);
                         result[nodeName] = value;
                     } else {
-                        if (typeof (result[nodeName].push) == "undefined") {
-                            var old = result[nodeName];
+                        if (typeof (result[nodeName].push) === 'undefined') {
+                            const old = result[nodeName];
                             result[nodeName] = [];
                             result[nodeName].push(old);
                         }
-                        var value = this.toJson(item);
+                        const value = this.toJson(item);
                         result[nodeName].push(value);
                     }
                 }
@@ -72,7 +72,7 @@ export class Json {
             return null;
         }
         if (/^(?:true|false)$/i.test(text)) {
-            return text.toLowerCase() === "true";
+            return text.toLowerCase() === 'true';
         }
         // if (/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/
         //     .test(text)) {

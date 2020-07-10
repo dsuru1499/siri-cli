@@ -4,19 +4,20 @@ import { ActionTypes, Actions } from '../actions/lines-discovery-actions';
 export interface State {
     request: any;
     response: any;
-};
+}
 
 export const initialState: State = {
     request: {},
     response: {},
 };
 
+// tslint:disable-next-line: no-shadowed-variable
 export function reducer(state = initialState, action: Actions): State {
 
     switch (action.type) {
 
         case ActionTypes.LOAD_SUCCESS: {
-            let result = Object.assign({}, state, {
+            const result = Object.assign({}, state, {
                 request: action.payload.request,
                 response: action.payload.result
             });
@@ -43,4 +44,5 @@ export function reducer(state = initialState, action: Actions): State {
     }
 }
 
+// tslint:disable-next-line: no-shadowed-variable
 export const state = (state: State) => state;

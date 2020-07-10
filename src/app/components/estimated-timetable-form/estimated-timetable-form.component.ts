@@ -1,40 +1,50 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { Constant } from '../../utils/constant';
-
+import { Observable, from } from 'rxjs';
+import { filter, take, flatMap, toArray } from 'rxjs/operators';
 @Component({
-  selector: 'estimated-timetable-form',
+  selector: 'app-estimated-timetable-form',
   templateUrl: './estimated-timetable-form.component.html',
-  styleUrls: ['./estimated-timetable-form.component.css']
+  styleUrls: ['./estimated-timetable-form.component.scss']
 })
 export class EstimatedTimetableFormComponent implements OnInit {
 
   @Input()
-  private lineRefs;
-
+  lineRefs: object[];
   @Output()
-  private submit = new EventEmitter();
+  estimatedTimetableChange = new EventEmitter();
 
-  private group: FormGroup;
+  group: FormGroup;
+
+  filteredLineRefs: Observable<object[]>;
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.group = this.fb.group({
-      lineRef: [''],
+      lineRef: ['', [Validators.required]],
       previewInterval: [''],
     });
+    this.filteredLineRefs = this.group.get('lineRef').valueChanges
+      .pipe(
+        flatMap(value => this.filter(this.lineRefs, 'LineName', value))
+      );
   }
 
   onChange(name, value) {
-    console.log(name + " = " + value);
-    let control = this.group.controls[name];
+    const control = this.group.controls[name];
     control.setValue(value);
   }
 
   onSubmit(value: any) {
-    this.submit.emit(value);
+    this.estimatedTimetableChange.emit(value);
   }
 
+  private filter(array: object[], key: string, value: string): Observable<object[]> {
+    return from(array).pipe(
+      filter(t => t[key].toLowerCase().includes(value.toLowerCase())),
+      take(50),
+      toArray()
+    );
+  }
 }

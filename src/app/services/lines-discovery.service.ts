@@ -1,38 +1,38 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { SiriService } from './siri.service';
 import { Xml } from '../utils/xml';
 
 @Injectable()
 export class LineDiscoveryService extends SiriService {
 
-  constructor(http: Http) {
+  constructor(http: HttpClient) {
     super(http);
   }
 
   public getDocument(url: string) {
+    const options = this.getOptions(url);
+    const now = new Date();
+    const doc = Xml.createSoapDocument();
+    const body = Xml.createElement(doc.documentElement, 'soap:Body');
 
-    var options = this.getOptions(url);
-    var now = new Date();
-    var doc = Xml.createSoapDocument();
-    var body = Xml.createElement(doc.documentElement, 'soap:Body');
-
-    var service = Xml.createElement(body, 'tns:LinesDiscovery', null, {
-      "xmlns:siri": Xml.SIRI_NAMESPACE_URI,
-      "xmlns:acsb": Xml.ACSB_NAMESPACE_URI,
-      "xmlns:ifopt": Xml.IFOPT_NAMESPACE_URI,
-      "xmlns:datex": Xml.DATEX_NAMESPACE_URI,
-      "xmlns:tns": Xml.TNS_NAMESPACE_URI
+    const service = Xml.createElement(body, 'tns:LinesDiscovery', null, {
+      'xmlns:siri': Xml.SIRI_NAMESPACE_URI,
+      'xmlns:acsb': Xml.ACSB_NAMESPACE_URI,
+      'xmlns:ifopt': Xml.IFOPT_NAMESPACE_URI,
+      'xmlns:datex': Xml.DATEX_NAMESPACE_URI,
+      'xmlns:tns': Xml.TNS_NAMESPACE_URI
     });
 
-    var request = Xml.createElement(service, 'Request', null, {
-      "version": options['version']
+    const request = Xml.createElement(service, 'Request', null, {
+      // tslint:disable-next-line: no-string-literal
+      version: options['version']
     });
     Xml.createElement(request, 'siri:RequestTimestamp', now.toISOString());
     Xml.createElement(request, 'siri:RequestorRef', options['requestorRef']);
     Xml.createElement(request, 'siri:MessageIdentifier', now.getTime());
 
-    var requestextension = Xml.createElement(service, 'RequestExtension');
+    const requestextension = Xml.createElement(service, 'RequestExtension');
 
     return doc;
   }

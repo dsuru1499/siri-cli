@@ -1,26 +1,37 @@
-<paper-drawer-panel #panel>
-  <paper-header-panel drawer>
-    <paper-drawer>
-      <paper-drawer-title photo="assets/images/siri.png" name="SIRI Services"> </paper-drawer-title>
-      <paper-drawer-item (click)="onClick('Lines Discovery','/line-discovery'); sm_collapse.hide(); et_collapse.hide(); panel.closeDrawer();">Lines Discovery</paper-drawer-item>
-      <paper-drawer-item (click)="onClick('Stop Points Discovery','/stop-points-discovery'); sm_collapse.hide(); et_collapse.hide(); panel.closeDrawer();">Stop Points Discovery</paper-drawer-item>
-      <paper-drawer-item (click)="onClick('Stop Monitoring','/stop-monitoring'); sm_collapse.toggle()">Stop Monitoring</paper-drawer-item>
-      <iron-collapse #sm_collapse>
-        <stop-monitoring-form [monitoringRefs]="monitoringRefs" [lineRefs]="lineRefs" (submit)="onStopMonitoringSubmit($event)"></stop-monitoring-form>
-      </iron-collapse>
-      <paper-drawer-item (click)="onClick('Estimated Timetable','/estimated-timetable'); et_collapse.toggle()">Estimated Timetable</paper-drawer-item>
-      <iron-collapse #et_collapse>
-        <estimated-timetable-form [lineRefs]="lineRefs" (submit)="onEstimatedTimetableSubmit($event)"></estimated-timetable-form>
-      </iron-collapse>
-    </paper-drawer>
-  </paper-header-panel>
-  <paper-header-panel main>
-    <paper-toolbar>
-      <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
-      <div class="title">{{title}}</div>
-    </paper-toolbar>
-    <div class="content">
-      <router-outlet></router-outlet>
-    </div>
-  </paper-header-panel>
-</paper-drawer-panel>
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>{{title}}</span>
+</mat-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" opened>
+    <mat-list>
+      <mat-list-item (click)="onClick('Lines Discovery','/line-discovery')">Lines Discovery</mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item (click)="onClick('Stop Points Discovery','/stop-points-discovery')">Stop Points Discovery
+      </mat-list-item>
+    </mat-list>
+    <mat-accordion>
+      <mat-expansion-panel (click)="onClick('Stop Monitoring','/stop-monitoring')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Stop Monitoring</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-stop-monitoring-form [monitoringRefs]="monitoringRefs" [lineRefs]="lineRefs"
+          (stopMonitoringChange)="onStopMonitoringSubmit($event)">
+        </app-stop-monitoring-form>
+      </mat-expansion-panel>
+      <mat-expansion-panel (click)="onClick('Estimated Timetable','/estimated-timetable')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Estimated Timetable</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-estimated-timetable-form [lineRefs]="lineRefs"
+          (estimatedTimetableChange)="onEstimatedTimetableSubmit($event)">
+        </app-estimated-timetable-form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

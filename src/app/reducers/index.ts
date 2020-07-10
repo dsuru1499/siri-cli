@@ -21,12 +21,22 @@ export const reducer = {
   et: EstimatedTimetable.reducer,
 };
 
+export const runtimeChecks = {
+  runtimeChecks: {
+    strictStateImmutability: false,
+    strictActionImmutability: false,
+    strictStateSerializability: false,
+    strictActionSerializability: false,
+    strictActionWithinNgZone: false,
+    strictActionTypeUniqueness: false,
+  }
+};
+
 export const ld = (state: State) => state.ld;
 export const ldState = createSelector(ld, LinesDiscovery.state);
 
 export const sd = (state: State) => state.sd;
 export const sdState = createSelector(sd, StopPointsDiscovery.state);
-
 
 export const sm = (state: State) => state.sm;
 export const smState = createSelector(sm, StopMonitoring.state);

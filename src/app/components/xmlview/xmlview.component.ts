@@ -1,25 +1,25 @@
 import { Component, ElementRef, Input, OnChanges, SimpleChange, ViewChild, Renderer2 } from '@angular/core';
-
 import { Xml } from '../../utils/xml';
 
-declare let document: any;
+declare let document: Document;
 declare let Node: any;
 
 @Component({
-  selector: 'xmlview',
+  selector: 'app-xmlview',
   templateUrl: './xmlview.component.html',
-  styleUrls: ['./xmlview.component.css']
+  styleUrls: ['./xmlview.component.scss']
 })
 export class XmlviewComponent implements OnChanges {
 
-  public static KEY = ' W0RTVV0gMTcvMTAvMTcgQ2l0eXdheSBhc3NvY2lhdGlvbiBkZSBtw6lkaW9jcmVzCg==';  
-  private static MAX: number = 100;
-  private counter: number = 0;
+  public static KEY = ' W0RTVV0gMTcvMTAvMTcgQ2l0eXdheSBhc3NvY2lhdGlvbiBkZSBtw6lkaW9jcmVzCg==';
+  private static MAX = 100;
+  private counter = 0;
 
   @Input()
   private model: any;
 
-  constructor(private elementRef: ElementRef,
+  constructor(
+    private elementRef: ElementRef,
     private renderer: Renderer2) { }
 
   ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
@@ -28,9 +28,9 @@ export class XmlviewComponent implements OnChanges {
 
   private clear(parent: any) {
     if (parent.hasChildNodes()) {
-      let children = parent.children;
+      const children: HTMLCollection = parent.children;
       for (let i = 0; i < children.length; i++) {
-        let child = children[i];
+        const child = children.item(i);
         this.renderer.removeChild(parent, child);
         child.textContent = '';
       }
@@ -44,11 +44,11 @@ export class XmlviewComponent implements OnChanges {
       const parent = this.elementRef.nativeElement;
       this.clear(parent);
 
-      let tree = this.renderer.createElement('div');
+      const tree = this.renderer.createElement('div');
       this.renderer.addClass(tree, 'pretty-print');
       this.renderer.appendChild(parent, tree);
 
-      for (var child = model.firstChild; child; child = child.nextSibling) {
+      for (let child = model.firstChild; child; child = child.nextSibling) {
         this.processNode(tree, child);
       }
 
@@ -57,13 +57,12 @@ export class XmlviewComponent implements OnChanges {
   }
 
   private initialize() {
-    let elements = document.querySelectorAll('.collapsible');
-    for (var i = 0; i < elements.length; i++) {
-      var element = elements[i];
-
+    const elements: NodeListOf<any> = document.querySelectorAll('.collapsible');
+    // tslint:disable-next-line: prefer-for-of
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
       this.clear(element);
       this.createCollapsibleExpanded(element, element.data);
-
     }
   }
 
@@ -91,15 +90,15 @@ export class XmlviewComponent implements OnChanges {
   }
 
   private processText(parent, node) {
-    this.createText(parent, node.nodeValue)
+    this.createText(parent, node.nodeValue);
   }
 
   private processCDATA(parent, node) {
     if (this.isShort(node.nodeValue)) {
-      let line = this.createLine(parent);
+      const line = this.createLine(parent);
       this.createText(line, '<![CDATA[ ' + node.nodeValue + ' ]]>');
     } else {
-      let collapsible = this.createCollapsibleCollapsed(parent, true);
+      const collapsible = this.createCollapsibleCollapsed(parent, true);
 
       this.createText(collapsible.expanded.start, '<![CDATA[');
       this.createText(collapsible.expanded.content, node.nodeValue);
@@ -113,10 +112,10 @@ export class XmlviewComponent implements OnChanges {
 
   private processProcessingInstruction(parent, node) {
     if (this.isShort(node.nodeValue)) {
-      let line = this.createLine(parent);
-      this.createComment(line, '<?' + node.tagName + ' ' + node.nodeValue + '?>')
+      const line = this.createLine(parent);
+      this.createComment(line, '<?' + node.tagName + ' ' + node.nodeValue + '?>');
     } else {
-      let collapsible = this.createCollapsibleCollapsed(parent, true);
+      const collapsible = this.createCollapsibleCollapsed(parent, true);
 
       this.createComment(collapsible.expanded.start, '<?' + node.nodeName);
       this.createComment(collapsible.expanded.content, node.nodeValue);
@@ -130,10 +129,10 @@ export class XmlviewComponent implements OnChanges {
 
   private processComment(parent, node) {
     if (this.isShort(node.nodeValue)) {
-      let line = this.createLine(parent);
+      const line = this.createLine(parent);
       this.createComment(line, '<!-- ' + node.nodeValue + ' -->');
     } else {
-      let collapsible = this.createCollapsibleCollapsed(parent, true);
+      const collapsible = this.createCollapsibleCollapsed(parent, true);
 
       this.createComment(collapsible.expanded.start, '<!--');
       this.createComment(collapsible.expanded.content, node.nodeValue);
@@ -146,24 +145,27 @@ export class XmlviewComponent implements OnChanges {
   }
 
   private processElement(parent, node) {
-    if (!node.firstChild)
+    if (!node.firstChild) {
       this.processEmptyElement(parent, node);
+    }
     else {
-      let child = node.firstChild;
-      if (child.nodeType == Node.TEXT_NODE && this.isShort(child.nodeValue) && !child.nextSibling)
+      const child = node.firstChild;
+      if (child.nodeType === Node.TEXT_NODE && this.isShort(child.nodeValue) && !child.nextSibling) {
         this.processShortTextOnlyElement(parent, node);
-      else
+      }
+      else {
         this.processComplexElement(parent, node);
+      }
     }
   }
 
   private processEmptyElement(parent, node) {
-    let line = this.createLine(parent);
+    const line = this.createLine(parent);
     this.createTag(line, node, false, true);
   }
 
   private processShortTextOnlyElement(parent, node) {
-    let line = this.createLine(parent);
+    const line = this.createLine(parent);
     this.createTag(line, node, false, false);
     for (let child = node.firstChild; child; child = child.nextSibling) {
       this.createText(line, child.nodeValue);
@@ -190,7 +192,7 @@ export class XmlviewComponent implements OnChanges {
   }
 
   private createCollapsible(parent: any, node: any, min?: number, max?: number) {
-    let collapsible = this.createHtmlElement(parent, 'div', ['collapsible']);
+    const collapsible = this.createHtmlElement(parent, 'div', ['collapsible']);
     collapsible.data = node;
     collapsible.min = min;
     collapsible.max = max;
@@ -200,10 +202,10 @@ export class XmlviewComponent implements OnChanges {
   }
 
   private createCollapsibleExpanded(parent: any, node: any, min?: number, max?: number) {
-    let expanded = this.createHtmlElement(parent, 'div', ['expanded']);
+    const expanded = this.createHtmlElement(parent, 'div', ['expanded']);
     expanded.start = this.createLine(expanded);
 
-    let collapseButton = this.createCollapseButton(expanded.start);
+    const collapseButton = this.createCollapseButton(expanded.start);
     collapseButton.onclick = this.collapse(parent, node, min, max);
     collapseButton.onmousedown = (e) => e.preventDefault();
     expanded.content = this.createHtmlElement(expanded, 'div', ['collapsible-content']);
@@ -211,28 +213,28 @@ export class XmlviewComponent implements OnChanges {
 
     if (min !== undefined && max !== undefined) {
 
-      let tag = this.createHtmlElement(expanded.start, 'span', ['html-tag']);
-      let text = this.renderer.createText('[' + min + '...' + max + ']');
+      const tag = this.createHtmlElement(expanded.start, 'span', ['html-tag']);
+      const text = this.renderer.createText('[' + min + '...' + max + ']');
       this.renderer.appendChild(tag, text);
 
-      let children = node.childNodes;
+      const children = node.childNodes;
       for (let i = min; i < max; i++) {
-        let child = children[i];
+        const child = children[i];
         this.processNode(expanded.content, child);
       }
     } else {
       this.createTag(expanded.start, node, false, false);
-      let children = node.childNodes;
+      const children = node.childNodes;
       if (children.length < XmlviewComponent.MAX) {
         for (let child = node.firstChild; child; child = child.nextSibling) {
           this.processNode(expanded.content, child);
         }
       } else {
-        let n = Math.ceil(children.length / XmlviewComponent.MAX);
+        const n = Math.ceil(children.length / XmlviewComponent.MAX);
         for (let i = 0; i < n; i++) {
-          let min = i * XmlviewComponent.MAX;
-          let max = Math.min(children.length, (i + 1) * XmlviewComponent.MAX - 1);
-          this.createCollapsible(expanded.content, node, min, max);
+          const minValue = i * XmlviewComponent.MAX;
+          const maxValue = Math.min(children.length, (i + 1) * XmlviewComponent.MAX - 1);
+          this.createCollapsible(expanded.content, node, minValue, maxValue);
         }
       }
       this.createTag(expanded.end, node, true, false);
@@ -243,16 +245,16 @@ export class XmlviewComponent implements OnChanges {
 
   private createCollapsibleCollapsed(parent: any, node: any, min?: number, max?: number) {
 
-    let collapsed = this.createHtmlElement(parent, 'div', ['collapsed']);
+    const collapsed = this.createHtmlElement(parent, 'div', ['collapsed']);
 
     collapsed.content = this.createLine(collapsed);
-    let expandButton = this.createExpandButton(collapsed.content);
+    const expandButton = this.createExpandButton(collapsed.content);
     expandButton.onclick = this.expand(parent, node, min, max);
     expandButton.onmousedown = (e) => e.preventDefault();
 
     if (min !== undefined && max !== undefined) {
-      let tag = this.createHtmlElement(collapsed.content, 'span', ['html-tag']);
-      let text = this.renderer.createText('[' + min + '...' + max + ']');
+      const tag = this.createHtmlElement(collapsed.content, 'span', ['html-tag']);
+      const text = this.renderer.createText('[' + min + '...' + max + ']');
       this.renderer.appendChild(tag, text);
     } else {
       this.createTag(collapsed.content, node, false, false);
@@ -284,10 +286,10 @@ export class XmlviewComponent implements OnChanges {
   }
 
   private createHtmlElement(parent: any, name: string, classes: string[], value?: string) {
-    let element = this.renderer.createElement(name);
-    classes.forEach(name => this.renderer.addClass(element, name));
+    const element = this.renderer.createElement(name);
+    classes.forEach(classeName => this.renderer.addClass(element, classeName));
     if (value) {
-      let text = this.renderer.createText(this.trim(value));
+      const text = this.renderer.createText(this.trim(value));
       this.renderer.appendChild(element, text);
     }
     this.renderer.appendChild(parent, element);
@@ -296,19 +298,20 @@ export class XmlviewComponent implements OnChanges {
 
   private createTag(parent: any, node: any, closed: boolean, empty: boolean) {
 
-    let tag = this.createHtmlElement(parent, 'span', ['html-tag']);
+    const tag = this.createHtmlElement(parent, 'span', ['html-tag']);
 
     let stringBeforeAttrs = '<';
     if (closed) {
       stringBeforeAttrs += '/';
     }
     stringBeforeAttrs += node.nodeName;
-    let textBeforeAttrs = this.renderer.createText(stringBeforeAttrs);
+    const textBeforeAttrs = this.renderer.createText(stringBeforeAttrs);
     this.renderer.appendChild(tag, textBeforeAttrs);
 
     if (!closed) {
-      for (let i = 0; i < node.attributes.length; i++) {
-        let attribute = this.createAttribute(tag, node.attributes[i])
+      const attributes: HTMLCollection = node.attributes;
+      for (let i = 0; i < attributes.length; i++) {
+        const attribute = this.createAttribute(tag, attributes.item(i));
       }
     }
 
@@ -317,7 +320,7 @@ export class XmlviewComponent implements OnChanges {
       stringAfterAttrs += '/';
     }
     stringAfterAttrs += '>';
-    let textAfterAttrs = this.renderer.createText(stringAfterAttrs);
+    const textAfterAttrs = this.renderer.createText(stringAfterAttrs);
     this.renderer.appendChild(tag, textAfterAttrs);
 
     return tag;
@@ -325,20 +328,20 @@ export class XmlviewComponent implements OnChanges {
 
   private createAttribute(parent: any, node: any) {
 
-    let attribute = this.createHtmlElement(parent, 'span', ['html-attribute']);
+    const attribute = this.createHtmlElement(parent, 'span', ['html-attribute']);
 
-    let textBefore = this.renderer.createText(' ');
+    const textBefore = this.renderer.createText(' ');
     this.renderer.appendChild(attribute, textBefore);
 
-    let attributeName = this.createHtmlElement(attribute, 'span', ['html-attribute-name'], node.name);
+    const attributeName = this.createHtmlElement(attribute, 'span', ['html-attribute-name'], node.name);
 
-    let textBetween = this.renderer.createText('="');
+    const textBetween = this.renderer.createText('="');
     this.renderer.appendChild(attribute, textBetween);
 
-    let attributeValue = this.createHtmlElement(attribute, 'span', ['html-attribute-value'], node.value);
+    const attributeValue = this.createHtmlElement(attribute, 'span', ['html-attribute-value'], node.value);
     this.renderer.appendChild(attribute, attributeValue);
 
-    let textAfter = this.renderer.createText('"');
+    const textAfter = this.renderer.createText('"');
     this.renderer.appendChild(attribute, textAfter);
 
     return attribute;

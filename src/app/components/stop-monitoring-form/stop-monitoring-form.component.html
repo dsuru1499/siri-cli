@@ -1,26 +1,65 @@
-<form is="iron-form" id="sm-form" [formGroup]="group" #f="ngForm" (ngSubmit)="onSubmit(f.value)" #form>
-  <vaadin-combo-box label="Monitoring Ref" [items]="monitoringRefs" item-label-path="StopName" item-value-path="StopPointRef" (value-changed)="onChange('monitoringRef',$event.detail.value)"
-    #monitoringRefElement></vaadin-combo-box>
-  <vaadin-combo-box name="lineref" label="Line Ref" [items]="lineRefs" item-label-path="LineRef" item-value-path="LineRef" (value-changed)="onChange('lineRef',$event.detail.value)"
-    #lineRefElement></vaadin-combo-box>
-  <paper-input type="text" label="Start Time (HH:MM)" formControlName="startTime" allowed-pattern="[0-9]|:" [invalid]="!group.controls['startTime'].valid"
-    error-message="invalid format !" ngDefaultControl></paper-input>
-  <vaadin-combo-box label="Stop VisitTypes" [items]="['arrivals', 'departures', 'all']" value="all" (value-changed)="onChange('stopVisitTypes', $event.detail.value)"></vaadin-combo-box>
-  <br/>
-  <span class="siri-cli-form-label">Preview Interval</span>
-  <paper-slider (value-changed)="onChange('previewInterval', $event.detail.value)" pin="true" max="180"></paper-slider>
-  <span class="siri-cli-form-label">Maximum Stop Visits</span>
-  <paper-slider (value-changed)="onChange('maximumStopVisits', $event.detail.value)" pin="true" max="100"></paper-slider>
-  <span class="siri-cli-form-label">Minimum Stop Visits Per Line</span>
-  <paper-slider (value-changed)="onChange('minimumStopVisitsPerLine', $event.detail.value)" pin="true" max="100"></paper-slider>
-  <span class="siri-cli-form-label">Minimum Stop Visits Per Line Via</span>
-  <paper-slider (value-changed)="onChange('minimumStopVisitsPerLineVia', $event.detail.value)" pin="true" max="100"></paper-slider>
-  <span class="siri-cli-form-label">Maximum Number Of Calls Previous</span>
-  <paper-slider (value-changed)="onChange('maximumNumberOfCallsPrevious', $event.detail.value)" pin="true" min="0" max="100"></paper-slider>
-  <span class="siri-cli-form-label">Maximum Number Of Calls Onwards</span>
-  <paper-slider (value-changed)="onChange('maximumNumberOfCallsOnwards', $event.detail.value)" pin="true" min="0" max="100"></paper-slider>
-  <br/>
-  <div class="layout horizontal end-justified">
-    <paper-button class="paper-button colored raised-button shadow-top-z-1" type="submit" raised [disabled]="!group.valid" (click)="onSubmit(f.value)">Submit</paper-button>
-  </div>
+<form fxLayout="column" [formGroup]="group" #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+
+    <mat-form-field>
+        <input type="text" placeholder="Monitoring Ref" matInput formControlName="monitoringRef"
+            [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let monitoringRef of filteredMonitoringRefs | async"
+                [value]="monitoringRef.StopPointRef">
+                {{monitoringRef.StopName}} ' / ' {{monitoringRef.StopPointRef}}
+            </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="group.controls['monitoringRef'].invalid">Monitoring ref is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input type="text" placeholder="Line Ref" matInput formControlName="lineRef" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let lineRef of filteredLineRefs | async" [value]="lineRef.LineRef">
+                {{lineRef.LineName}} ' / ' {{lineRef.LineRef}}
+            </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="group.controls['lineRef'].invalid">Line ref is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Start Time</mat-label>
+        <input matInput type="time" formControlName="startTime">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Stop VisitTypes</mat-label>
+        <mat-select formControlName="stopVisitTypes">
+            <mat-option *ngFor="let value of ['arrivals', 'departures', 'all']" [value]="value">
+                {{value}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-label>Preview Interval</mat-label>
+    <mat-slider thumbLabel autoTick min="0" max="60" formControlName="previewInterval"
+        (change)="onChange('previewInterval', $event.value)">
+    </mat-slider>
+    <mat-label>Maximum Stop Visits</mat-label>
+    <mat-slider thumbLabel autoTick min="0" max="100" formControlName="maximumStopVisits"
+        (change)="onChange('maximumStopVisits', $event.value)">
+    </mat-slider>
+    <mat-label>Minimum Stop Visits Per Line</mat-label>
+    <mat-slider thumbLabel autoTick min="0" max="100" formControlName="minimumStopVisitsPerLine"
+        (change)="onChange('minimumStopVisitsPerLine', $event.value)">
+    </mat-slider>
+    <mat-label>Minimum Stop Visits Per Line Via</mat-label>
+    <mat-slider thumbLabel autoTick min="0" max="100" formControlName="minimumStopVisitsPerLineVia"
+        (change)="onChange('minimumStopVisitsPerLineVia', $event.value)">
+    </mat-slider>
+    <mat-label>Maximum Number Of Calls Previous</mat-label>
+    <mat-slider thumbLabel autoTick min="0" max="100" formControlName="maximumNumberOfCallsPrevious"
+        (change)="onChange('maximumNumberOfCallsPrevious', $event.value)">
+    </mat-slider>
+    <mat-label>Maximum Number Of Calls Onwards</mat-label>
+    <mat-slider thumbLabel autoTick min="0" max="100" formControlName="maximumNumberOfCallsOnwards"
+        (change)="onChange('maximumNumberOfCallsOnwards', $event.value)">
+    </mat-slider>
+
+    <button mat-raised-button fxFlexAlign="end" fxLayoutAlign="end" type="submit" raised [disabled]="!group.valid">Submit</button>
 </form>

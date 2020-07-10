@@ -1,16 +1,29 @@
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { PolymerElement } from '@vaadin/angular2-polymer';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
+
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+
+import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
-import { AppRoutes } from './app.routes';
-import { reducer } from './reducers';
+import { reducer, runtimeChecks } from './reducers';
 
 import { LineDiscoveryService } from './services/lines-discovery.service';
 import { StopPointsDiscoveryService } from './services/stop-points-discovery.service';
@@ -22,7 +35,6 @@ import { StopPointsDiscoveryEffects } from './effects/stop-points-discovery-effe
 import { StopMonitoringEffects } from './effects/stop-monitoring-effects';
 import { EstimatedTimetableEffects } from './effects/estimated-timetable-effects';
 
-import { JsonviewComponent } from './components/jsonview/jsonview.component';
 import { StopMonitoringFormComponent } from './components/stop-monitoring-form/stop-monitoring-form.component';
 import { EstimatedTimetableFormComponent } from './components/estimated-timetable-form/estimated-timetable-form.component';
 
@@ -32,33 +44,41 @@ import { StopMonitoringComponent } from './containers/stop-monitoring/stop-monit
 import { EstimatedTimetableComponent } from './containers/estimated-timetable/estimated-timetable.component';
 import { XmlviewComponent } from './components/xmlview/xmlview.component';
 
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 @NgModule({
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     AppComponent,
-    // PolymerElement('paper-input'),
-    // PolymerElement('vaadin-combo-box'),
-    JsonviewComponent,
-    StopMonitoringFormComponent,
     EstimatedTimetableFormComponent,
+    StopMonitoringFormComponent,
+    EstimatedTimetableComponent,
     LinesDiscoveryComponent,
     StopPointsDiscoveryComponent,
     StopMonitoringComponent,
-    EstimatedTimetableComponent,
     XmlviewComponent,
   ],
   imports: [
     BrowserModule,
-    StoreModule.provideStore(reducer),
-    EffectsModule.run(LinesDiscoveryEffects),
-    EffectsModule.run(StopPointsDiscoveryEffects),
-    EffectsModule.run(StopMonitoringEffects),
-    EffectsModule.run(EstimatedTimetableEffects),
-    RouterModule.forRoot(AppRoutes),
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    StoreModule.forRoot(reducer, runtimeChecks),
+    EffectsModule.forRoot([LinesDiscoveryEffects, StopPointsDiscoveryEffects, StopMonitoringEffects, EstimatedTimetableEffects]),
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
-    AngularFontAwesomeModule
+    FlexLayoutModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatExpansionModule,
+    MatAutocompleteModule,
+    MatSliderModule,
+    MatFormFieldModule,
+    MatDividerModule,
+    MatInputModule,
+    MatSelectModule,
   ],
   providers: [LineDiscoveryService, StopPointsDiscoveryService, StopMonitoringService, EstimatedTimetableService],
   bootstrap: [AppComponent]
